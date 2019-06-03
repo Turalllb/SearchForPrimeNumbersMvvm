@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SearchForPrimeNumbersMvvm</string>
+    <string name="editText_hint">Введите натуральное число</string>
+    <string name="to_calculate">Расчитать</string>
+    <string  name="sum">Сумма: %1$d</string>
+    <string  name="calculation_time">Время расчета: %1$f сек </string>
+</resources>
