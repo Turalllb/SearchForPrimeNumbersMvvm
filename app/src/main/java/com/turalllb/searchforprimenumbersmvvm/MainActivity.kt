@@ -1,19 +1,19 @@
 package com.turalllb.searchforprimenumbersmvvm
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.TextInputLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputLayout
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,11 +47,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         model.primeNumbers.observe(this, Observer<MutableList<Long>> {
-            it?.let {
-                primeNumbers.clear()
-                primeNumbers.addAll(it)
-                adapterPrimeNumbers.notifyDataSetChanged()
-            }
+            primeNumbers.clear()
+            primeNumbers.addAll(it)
+            adapterPrimeNumbers.notifyDataSetChanged()
         })
 
         rv.layoutManager = LinearLayoutManager(this)
@@ -67,9 +65,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         model.calculationBtEnable.observe(this, Observer<Boolean> {
-            it?.let {
-                calculateBt.isEnabled = it
-            }
+            calculateBt.isEnabled = it
         })
 
     }
