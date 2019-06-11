@@ -26,8 +26,6 @@ class MainViewModel : ViewModel() {
                 2 -> findPrimeBitSet(n)
                 3 -> findPrimeSegmented(n)
             }
-
-
             val stopTime = System.currentTimeMillis()
             timeElapsed.postValue((stopTime - startTime).toDouble() / 1000)
             isLoading.postValue(false)
@@ -57,8 +55,6 @@ class MainViewModel : ViewModel() {
         sumPrimeNumbers.postValue(sumPrimeTemp)
         primeNumbers.value?.clear()
         primeNumbers.postValue(listTemp)
-        // BigInteger.probablePrime(64)
-
     }
 
 
@@ -140,8 +136,9 @@ class MainViewModel : ViewModel() {
             val start = k * cache
 
             var i = 0
+            var startIdx: Int
             while (i < cnt) {
-                var startIdx = (start + primes[i] - 1) / primes[i]
+                startIdx = (start + primes[i] - 1) / primes[i]
                 var j = max(startIdx, 2) * primes[i] - start
                 while (j < cache) {
                     bool[j] = true
