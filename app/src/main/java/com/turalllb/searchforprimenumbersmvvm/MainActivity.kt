@@ -4,10 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,15 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
     private lateinit var adapterPrimeNumbers: AdapterPrimeNumbers
     private lateinit var editText: EditText
     private lateinit var calculateBt: Button
     private lateinit var sumTv: TextView
     private lateinit var calculationTimeTv: TextView
     private lateinit var progressBar: ProgressBar
-    private var primeNumbers: MutableList<Long> = arrayListOf()
+    private var primeNumbers: MutableList<Int> = arrayListOf()
     private lateinit var model: MainViewModel
+    private lateinit var spinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         calculationTimeTv = findViewById(R.id.calculation_time_tv)
         val rv: RecyclerView = findViewById(R.id.rv)
         progressBar = findViewById(R.id.progressBar)
+        spinner = findViewById(R.id.spinner)
         //endregion
 
         model = ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -45,16 +44,11 @@ class MainActivity : AppCompatActivity() {
         model.isLoading.observe(this, Observer<Boolean> {
             progressBar.visibility = if (it == true) View.VISIBLE else View.INVISIBLE
         })
-
-        model.primeNumbers.observe(this, Observer<MutableList<Long>> {
+        model.primeNumbers.observe(this, Observer<MutableList<Int>> {
             primeNumbers.clear()
             primeNumbers.addAll(it)
             adapterPrimeNumbers.notifyDataSetChanged()
         })
-
-        rv.layoutManager = LinearLayoutManager(this)
-        adapterPrimeNumbers = AdapterPrimeNumbers(this, primeNumbers)
-        rv.adapter = adapterPrimeNumbers
 
         model.sumPrimeNumbers.observe(this, Observer {
             sumTv.text = getString(R.string.sum, it)
@@ -68,14 +62,30 @@ class MainActivity : AppCompatActivity() {
             calculateBt.isEnabled = it
         })
 
+
+        rv.layoutManager = LinearLayoutManager(this)
+        adapterPrimeNumbers = AdapterPrimeNumbers(this, primeNumbers)
+        rv.adapter = adapterPrimeNumbers
+
+        val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.algorithms))
+        spinner.adapter = spinnerAdapter
+        spinner.onItemSelectedListener = this
     }
 
     fun onClickCalculate(v: View?) {
         hideKeyboard()
         val input = editText.text.toString()
         if (input != "") {
-            model.clickCalculate(input.toLong())
+            model.clickCalculate(input.toInt())
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+       model.algorithmsPosition.value = position
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+         //nothing
     }
 
     private fun hideKeyboard() {

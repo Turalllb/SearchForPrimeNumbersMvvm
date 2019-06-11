@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="algorithms">
+        <item>мин. потребление памяти</item>
+        <item>решето Эратосфена</item>
+        <item>решето Эратосфена на битовых флагах</item>
+        <item>сегментированное решето на битовых флагах</item>
+    </string-array>
+</resources>
