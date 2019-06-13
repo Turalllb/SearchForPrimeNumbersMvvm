@@ -21,10 +21,10 @@ class MainViewModel : ViewModel() {
         Thread {
             val startTime = System.currentTimeMillis()
             when (algorithmsPosition.value) {
-                0 -> findPrimeNumbers(n)
-                1 -> findPrimeNumbersAlg2(n)
-                2 -> findPrimeBitSet(n)
-                3 -> findPrimeSegmented(n)
+                0 -> findPrimesNumbers(n)
+                1 -> findPrimesNumbersErastofen(n)
+                2 -> findPrimesBitSet(n)
+                3 -> findPrimesSegmentedAlg(n)
             }
             val stopTime = System.currentTimeMillis()
             timeElapsed.postValue((stopTime - startTime).toDouble() / 1000)
@@ -37,7 +37,7 @@ class MainViewModel : ViewModel() {
     /*Самый оптимальный по памяти алгоритм. Оптимизации:
     1) проверка только нечетных чисел, т.к. 2 единственное четное простое число, определяем 2 сразу как простое. (Предложил сам Эратосфен)
     2) Поиск делителей числа только в диапазоне от [3, sqrt(n)] */
-    private fun findPrimeNumbers(n: Int) {
+    private fun findPrimesNumbers(n: Int) {
         primeNumbers.postValue(mutableListOf())
         val listTemp: MutableList<Int> = arrayListOf()
         var sumPrimeTemp = 0L
@@ -68,7 +68,7 @@ class MainViewModel : ViewModel() {
 
 
     //Стандартное решето Эратосфена
-    private fun findPrimeNumbersAlg2(n: Int) {
+    private fun findPrimesNumbersErastofen(n: Int) {
         primeNumbers.postValue(mutableListOf())
         val listTemp: MutableList<Int> = arrayListOf()
 
@@ -96,7 +96,7 @@ class MainViewModel : ViewModel() {
 
 
     // Стандартное решето на битовых флагах
-    private fun findPrimeBitSet(n: Int) {
+    private fun findPrimesBitSet(n: Int) {
         primeNumbers.postValue(mutableListOf())
         val listTemp: MutableList<Int> = arrayListOf()
 
@@ -124,11 +124,11 @@ class MainViewModel : ViewModel() {
 
 
     //Сегментированное Решето Эратосфена. на битовых флагах.
-    private fun findPrimeSegmented(n: Int) {
+    private fun findPrimesSegmentedAlg(n: Int) {
         primeNumbers.postValue(mutableListOf())
         val listTemp: MutableList<Int> = arrayListOf()
         val sortMax = kotlin.math.sqrt(n.toDouble()).toInt()
-        val cache = 30000  //оптимальный размер одного блока
+        val cache = 10000  //оптимальный размер одного блока
         val countBlock: Int = n / cache //кол-во блоков
         val primes = findPrimesUntilSqrtN(sortMax) //сперва получаем все простые числа до sqrtMax
         val cnt = primes.size
