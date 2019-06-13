@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-class AdapterPrimeNumbers(context: Context, private val primeNumbers: List<Int>) :
+class AdapterPrimeNumbers(context: Context) :
     RecyclerView.Adapter<AdapterPrimeNumbers.ViewHolder>() {
-    private val inflater: LayoutInflater = LayoutInflater.from(context) //взять контекст у вьюГруп
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
+    internal var primeNumbers: List<Int> = arrayListOf()
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,6 +25,8 @@ class AdapterPrimeNumbers(context: Context, private val primeNumbers: List<Int>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textView.text = primeNumbers[position].toString()
     }
+
+
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

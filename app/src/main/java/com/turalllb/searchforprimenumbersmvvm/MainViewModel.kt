@@ -38,6 +38,7 @@ class MainViewModel : ViewModel() {
     1) проверка только нечетных чисел, т.к. 2 единственное четное простое число, определяем 2 сразу как простое. (Предложил сам Эратосфен)
     2) Поиск делителей числа только в диапазоне от [3, sqrt(n)] */
     private fun findPrimeNumbers(n: Int) {
+        primeNumbers.postValue(mutableListOf())
         val listTemp: MutableList<Int> = arrayListOf()
         var sumPrimeTemp = 0L
 
@@ -52,8 +53,7 @@ class MainViewModel : ViewModel() {
             }
         }
 
-        sumPrimeNumbers.postValue(sumPrimeTemp)
-        primeNumbers.value?.clear()
+
         primeNumbers.postValue(listTemp)
     }
 
@@ -69,6 +69,7 @@ class MainViewModel : ViewModel() {
 
     //Стандартное решето Эратосфена
     private fun findPrimeNumbersAlg2(n: Int) {
+        primeNumbers.postValue(mutableListOf())
         val listTemp: MutableList<Int> = arrayListOf()
 
         val temp = Array(n + 1) { true }
@@ -88,7 +89,7 @@ class MainViewModel : ViewModel() {
             if (temp[j]) listTemp.add(j)
         }
 
-        primeNumbers.value?.clear()
+
         primeNumbers.postValue(listTemp)
         sumPrimeNumbers.postValue(getSumArray(listTemp))
     }
@@ -96,6 +97,7 @@ class MainViewModel : ViewModel() {
 
     // Стандартное решето на битовых флагах
     private fun findPrimeBitSet(n: Int) {
+        primeNumbers.postValue(mutableListOf())
         val listTemp: MutableList<Int> = arrayListOf()
 
         val temp = BitSet(n)
@@ -114,7 +116,8 @@ class MainViewModel : ViewModel() {
         for (j: Int in 3..n step 2) {
             if (!temp[j]) listTemp.add(j)
         }
-        primeNumbers.value?.clear()
+
+
         primeNumbers.postValue(listTemp)
         sumPrimeNumbers.postValue(getSumArray(listTemp))
     }
@@ -122,6 +125,7 @@ class MainViewModel : ViewModel() {
 
     //Сегментированное Решето Эратосфена. на битовых флагах.
     private fun findPrimeSegmented(n: Int) {
+        primeNumbers.postValue(mutableListOf())
         val listTemp: MutableList<Int> = arrayListOf()
         val sortMax = kotlin.math.sqrt(n.toDouble()).toInt()
         val cache = 30000  //оптимальный размер одного блока
@@ -146,7 +150,7 @@ class MainViewModel : ViewModel() {
                 }
                 i++
             }
-            if (k == 0) {
+            if (k == 0) { //В самом первом блоке исключаю
                 bool[0] = true
                 bool[1] = true
             }
@@ -158,7 +162,7 @@ class MainViewModel : ViewModel() {
             k++
         }
 
-        primeNumbers.value?.clear()
+
         primeNumbers.postValue(listTemp)
         sumPrimeNumbers.postValue(getSumArray(listTemp))
     }

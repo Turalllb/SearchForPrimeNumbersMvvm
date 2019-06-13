@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
     private lateinit var sumTv: TextView
     private lateinit var calculationTimeTv: TextView
     private lateinit var progressBar: ProgressBar
-    private var primeNumbers: MutableList<Int> = arrayListOf()
     private lateinit var model: MainViewModel
     private lateinit var spinner: Spinner
 
@@ -44,9 +43,9 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
         model.isLoading.observe(this, Observer<Boolean> {
             progressBar.visibility = if (it == true) View.VISIBLE else View.INVISIBLE
         })
+
         model.primeNumbers.observe(this, Observer<MutableList<Int>> {
-            primeNumbers.clear()
-            primeNumbers.addAll(it)
+            adapterPrimeNumbers.primeNumbers = it
             adapterPrimeNumbers.notifyDataSetChanged()
         })
 
@@ -64,13 +63,15 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener {
 
 
         rv.layoutManager = LinearLayoutManager(this)
-        adapterPrimeNumbers = AdapterPrimeNumbers(this, primeNumbers)
+        adapterPrimeNumbers = AdapterPrimeNumbers(this)
         rv.adapter = adapterPrimeNumbers
 
         val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.algorithms))
         spinner.adapter = spinnerAdapter
         spinner.onItemSelectedListener = this
     }
+
+
 
     fun onClickCalculate(v: View?) {
         hideKeyboard()
